@@ -6,7 +6,7 @@
 /*   By: khirohas <khirohas@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 08:44:04 by khirohas          #+#    #+#             */
-/*   Updated: 2022/02/04 00:58:53 by khirohas         ###   ########.fr       */
+/*   Updated: 2022/02/04 01:37:36 by khirohas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,16 @@ char	*get_next_line(int fd)
 		return (line);
 	}
 	if ((buf = ft_read_buffer(fd)) == NULL)
-		return (NULL);
+		{
+			if (save[0] != '\0')
+			{
+				line = ft_strcdup(save, '\0');
+				save[0] = '\0';
+				return (line);
+			}
+			else
+				return (NULL);
+		}
 	else if (!(ft_strchr(buf, '\n')))
 		line = ft_strcjoin(save, buf, '\0');
 	else

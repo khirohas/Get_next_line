@@ -44,7 +44,6 @@ static char	*ft_read_buffer(int fd)
 		*/
 		if (read_ret < BUFFER_SIZE)
 			return (raw_line);
-
 		else if ((read_ret = read(fd, buf1, BUFFER_SIZE)) <= 0)
 			{
 				//printf("buf1:%s\n", buf1);
@@ -82,10 +81,9 @@ char	*get_next_line(int fd)
 		ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1);
 		return (line);
 	}
-	if ((buf = ft_read_buffer(fd)) == NULL)
-		return (NULL);
-	if ((line = ft_strcjoin(save, buf, '\n')) == NULL); //segfault when save is null; make sure save it works even when save is NULL.
+	if ((buf = ft_read_buffer(fd)) == NULL || !ft_strchr(buf, '\n'))
 		return (buf);
+	line = ft_strcjoin(save, buf, '\n'); //segfault when save is null; make sure save it works even when save is NULL.
 	nlptr = (ft_strchr(buf, '\n') + 1); // this could be written down in the strlcpy.
 	//printf("nlptr:[%s]\n", nlptr);
 	ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1); //ft_strlen necessary?

@@ -5,10 +5,10 @@
 #include <stdio.h>
 int		main(void)
 {
-	int		fd = open("text.txt", O_RDONLY);
+	int		fd = open("41_no_nl", O_RDONLY);
 	char *ret;
 	size_t i = 0;
-	size_t n = 12;
+	size_t n = 4;
 
 	while (i < n)
 	{

@@ -89,7 +89,8 @@ char	*ft_strcjoin(const char *s1, const char *s2, char c)
 		dst = ft_strcdup(s1, c);
 	else
 	{
-		c_ptr = ft_strchr(s2, c);
+		if ((c_ptr = ft_strchr(s2, c)) == NULL)
+			return (NULL);
 		dst_len = ft_strlen(s1) + (c_ptr - s2 + 1);
 		dst = malloc(dst_len + 1);
 		if(!dst)

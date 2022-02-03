@@ -6,7 +6,7 @@
 /*   By: khirohas <khirohas@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 08:44:04 by khirohas          #+#    #+#             */
-/*   Updated: 2021/12/25 08:44:04 by khirohas         ###   ########.fr       */
+/*   Updated: 2022/02/04 00:58:53 by khirohas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static char	*ft_read_buffer(int fd)
 
 	raw_line	= NULL;
 	*buf1		= '\0';
-	read_ret	= 43;
+	read_ret	= BUFFER_SIZE;
 
-	while (/*!(read_ret < BUFFER_SIZE) ||*/ !(ft_strchr(buf1, '\n')))
+	while (/*!(read_ret < BUFFER_SIZE) ||*/!(ft_strchr(buf1, '\n')))
 	{
 		/*buf1 = malloc(BUFFER_SIZE + 1);
 		if (!buf1)
@@ -44,11 +44,11 @@ static char	*ft_read_buffer(int fd)
 		*/
 		if (read_ret < BUFFER_SIZE)
 			return (raw_line);
-		else if ((read_ret = read(fd, buf1, BUFFER_SIZE)) <= 0)
+		else if ((read_ret = read(fd, buf1, BUFFER_SIZE)) <= 0 && (!raw_line))
 			{
 				//printf("buf1:%s\n", buf1);
 				//printf("readret:%ld\n", read_ret);
-				free(raw_line);
+				//free(raw_line);
 				return (NULL);
 			}
 		buf1[read_ret] = '\0';

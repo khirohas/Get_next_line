@@ -81,15 +81,20 @@ char	*get_next_line(int fd)
 		ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1);
 		return (line);
 	}
-	if ((buf = ft_read_buffer(fd)) == NULL || !ft_strchr(buf, '\n'))
-		return (buf);
-	line = ft_strcjoin(save, buf, '\n'); //segfault when save is null; make sure save it works even when save is NULL.
-	nlptr = (ft_strchr(buf, '\n') + 1); // this could be written down in the strlcpy.
-	//printf("nlptr:[%s]\n", nlptr);
-	ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1); //ft_strlen necessary?
-	//save = nlptr;
-	//save = ft_strcdup(nlptr, '\0');
-	//printf("save_aft:[%s]\n", save);
+	if ((buf = ft_read_buffer(fd)) == NULL)
+		return (NULL);
+	else if (!(ft_strchr(buf, '\n')))
+		line = ft_strcjoin(save, buf, '\0');
+	else
+	{
+		line = ft_strcjoin(save, buf, '\n'); //segfault when save is null; make sure save it works even when save is NULL.
+		nlptr = (ft_strchr(buf, '\n') + 1); // this could be written down in the strlcpy.
+		//printf("nlptr:[%s]\n", nlptr);
+		ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1); //ft_strlen necessary?
+		//save = nlptr;
+		//save = ft_strcdup(nlptr, '\0');
+		//printf("save_aft:[%s]\n", save);
+	}
 	free(buf);
 	return (line);
 }

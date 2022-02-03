@@ -6,11 +6,16 @@
 int		main(void)
 {
 	int		fd = open("text.txt", O_RDONLY);
-	size_t	i = 3;
-	while (i > 0)
-	{
-		printf("%s", get_next_line(fd));
-		i--;
-	}
+	char *ret;
+	size_t i = 0;
+	size_t n = 12;
 
+	while (i < n)
+	{
+		ret = get_next_line(fd);
+		printf("ret:%s", ret);
+		free(ret);
+		i++;
+	}
+	return (0);
 }

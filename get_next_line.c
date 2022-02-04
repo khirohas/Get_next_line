@@ -6,7 +6,7 @@
 /*   By: khirohas <khirohas@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 08:44:04 by khirohas          #+#    #+#             */
-/*   Updated: 2022/02/04 14:47:55 by khirohas         ###   ########.fr       */
+/*   Updated: 2022/02/04 23:31:38 by khirohas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,15 @@ char	*get_next_line(int fd)
 				return (NULL);
 		}
 	else if (!(ft_strchr(buf, '\n')))
-		line = ft_strcjoin(save, buf, '\0');
+	{
+		if (save[0] != '\0')
+		{
+			line = ft_strcjoin(save, buf, '\0');
+			save[0] = '\0';
+		}
+		else
+			line = ft_strcdup(buf, '\0');
+	}
 	else
 	{
 		line = ft_strcjoin(save, buf, '\n'); //segfault when save is null; make sure save it works even when save is NULL.

@@ -6,7 +6,7 @@
 /*   By: khirohas <khirohas@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 08:44:04 by khirohas          #+#    #+#             */
-/*   Updated: 2022/02/04 23:31:38 by khirohas         ###   ########.fr       */
+/*   Updated: 2022/02/05 00:05:51 by khirohas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,11 @@ static char	*ft_read_buffer(int fd)
 	*buf1		= '\0';
 	read_ret	= BUFFER_SIZE;
 
-	while (!(ft_strchr(buf1, '\n')) && ((read_ret = read(fd, buf1, BUFFER_SIZE)) > 0))
-	{
+	while (!ft_strchr(buf1, '\n')) /*&& (read_ret = read(fd, buf1, BUFFER_SIZE)) > 0)
+*/
+	{	
+		if ((read_ret = read(fd, buf1, BUFFER_SIZE)) <= 0)
+			break ;
 		buf1[read_ret] = '\0';
 		buf2 = ft_strcjoin(raw_line, buf1, '\0');
 		free(raw_line);
@@ -46,7 +49,6 @@ static char	*ft_read_buffer(int fd)
 
 char	*get_next_line(int fd)
 {
-	//static char	*save;
 	static char	save[BUFFER_SIZE + 1];
 	char		*buf;
 	char		*line;
@@ -81,93 +83,11 @@ char	*get_next_line(int fd)
 	}
 	else
 	{
-		line = ft_strcjoin(save, buf, '\n'); //segfault when save is null; make sure save it works even when save is NULL.
-		nlptr = (ft_strchr(buf, '\n') + 1); // this could be written down in the strlcpy.
-		ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1); //ft_strlen necessary?
+		line = ft_strcjoin(save, buf, '\n');
+		nlptr = (ft_strchr(buf, '\n') + 1); 
+		ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1);
 	}
 	free(buf);
 	return (line);
 }
-
-
-/*
-char	*get_next_line(int fd)
-{
-	static char	*save;
-	static char		*nl;
-	size_t		len_save;
-	char		buf[BUFFER_SIZE + 1];
-	char		*line;
-
-	//nl = NULL;
-	if (save)
-	{
-		nl = ft_strchr(save, '\n');
-		len_save = ft_strlen(save);
-	}
-	if (nl)
-	{
-		line = malloc((nl - save) + 2);
-		ft_memmove(line, save, (nl - save + 1));
-		line[nl - save + 1] = '\0';
-		save = nl + 1;
-		return (line);
-	}
-	else
-	{
-	//	buf = read_buffer(fd);
-		read (fd, buf, BUFFER_SIZE);
-		if (!save)
-			len_save = 0;
-		buf[BUFFER_SIZE] = '\0';
-		printf("%s\n", buf);
-		nl = ft_strchr(buf, '\n');
-		line = malloc(len_save + (nl - buf) + 2);
-		if (save)
-			ft_memmove(line, save, len_save);
-		ft_memmove(line + len_save, buf, nl - buf + 1);
-		save = nl + 1;
-		return (line);
-	}
-}
-*/
-/*
-char	*get_next_line(int fd)
-{
-	static char	*save;
-	static char		*nl;
-	size_t		len_save;
-	char		*buf;
-	char		*line;
-
-	//nl = NULL;
-	if (save)
-	{
-		nl = ft_strchr(save, '\n');
-		len_save = ft_strlen(save);
-	}
-	if (nl)
-	{
-		line = malloc((nl - save) + 2);
-		ft_memmove(line, save, (nl - save + 1));
-		line[nl - save + 1] = '\0';
-		save = nl + 1;
-		return (line);
-	}
-	else
-	{
-		buf = read_buffer(fd);
-		if (!save)
-			len_save = 0;
-		nl = ft_strchr(buf, '\n');
-		line = malloc(len_save + (nl - buf) + 2);
-		ft_memmove(line, save, len_save);
-		ft_memmove(line + len_save, buf, nl - buf + 1);
-		line[len_save + nl - buf + 1] = '\0';
-		save = nl + 1;
-		free(buf);
-		return (line);
-	}
-}
-*/
 #endif

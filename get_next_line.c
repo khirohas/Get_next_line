@@ -17,25 +17,28 @@
 static char	*check_save(char *save)
 {
 	char	*line;
-	if (!save || !(line = ft_strcdup(save, '\n')))
+	char	*nlptr;
+
+	if (!(line = ft_strcdup(save, '\n')))
 		return (NULL);
+	nlptr = (ft_strchr(save, '\n') + 1);
+	ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1);
 	return (line);
 }
 
 static char	*ft_read_buffer(int fd)
 {
-	char	buf1[BUFFER_SIZE + 1];
+	char	*buf1;
 	char	*buf2;
 	char	*raw_line;
 	ssize_t	read_ret;
 
 	raw_line	= NULL;
+	if (!(buf1 = malloc(BUFFER_SIZE + 1)))
+		return (NULL);
 	*buf1		= '\0';
-	read_ret	= BUFFER_SIZE;
-
-	while (!ft_strchr(buf1, '\n')) /*&& (read_ret = read(fd, buf1, BUFFER_SIZE)) > 0)
-*/
-	{	
+	while (!ft_strchr(buf1, '\n'))
+	{
 		if ((read_ret = read(fd, buf1, BUFFER_SIZE)) <= 0)
 			break ;
 		buf1[read_ret] = '\0';
@@ -44,7 +47,36 @@ static char	*ft_read_buffer(int fd)
 		raw_line = ft_strcdup(buf2, '\0');
 		free(buf2);
 	}
+	free(buf1);
 	return (raw_line);
+}
+
+char	*gnl_split(char *buf, char *save)
+{
+	char	*line;
+	char	*nlptr;
+	if (buf == NULL && save[0] != '\0')
+	{
+		line = ft_strcdup(save, '\0');
+		save[0] = '\0';
+	}
+	else if (buf == NULL)
+		return (NULL);
+
+	else if (!(ft_strchr(buf, '\n')) && save[0] != '\0')
+	{
+		line = ft_strcjoin(save, buf, '\0');
+		save[0] = '\0';
+	}
+	else if (!(ft_strchr(buf, '\n')))
+		line = ft_strcdup(buf, '\0');
+	else
+	{
+		line = ft_strcjoin(save, buf, '\n');
+		nlptr = (ft_strchr(buf, '\n') + 1);
+		ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1);
+	}
+	return (line);
 }
 
 char	*get_next_line(int fd)
@@ -52,41 +84,12 @@ char	*get_next_line(int fd)
 	static char	save[BUFFER_SIZE + 1];
 	char		*buf;
 	char		*line;
-	char		*nlptr;
+	//char		*nlptr;
 
 	if ((line = check_save(save)) != NULL)
-	{
-		nlptr = (ft_strchr(save, '\n') + 1);
-		ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1);
 		return (line);
-	}
-	if ((buf = ft_read_buffer(fd)) == NULL)
-		{
-			if (save[0] != '\0')
-			{
-				line = ft_strcdup(save, '\0');
-				save[0] = '\0';
-				return (line);
-			}
-			else
-				return (NULL);
-		}
-	else if (!(ft_strchr(buf, '\n')))
-	{
-		if (save[0] != '\0')
-		{
-			line = ft_strcjoin(save, buf, '\0');
-			save[0] = '\0';
-		}
-		else
-			line = ft_strcdup(buf, '\0');
-	}
-	else
-	{
-		line = ft_strcjoin(save, buf, '\n');
-		nlptr = (ft_strchr(buf, '\n') + 1); 
-		ft_strlcpy(save, nlptr, ft_strlen(nlptr) + 1);
-	}
+	buf = ft_read_buffer(fd);
+	line = gnl_split(buf, save);
 	free(buf);
 	return (line);
 }

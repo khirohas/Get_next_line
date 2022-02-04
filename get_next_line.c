@@ -11,9 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 #ifdef BUFFER_SIZE
-
 static char	*check_save(char *save)
 {
 	char	*line;
@@ -51,24 +49,24 @@ static char	*ft_read_buffer(int fd)
 	return (raw_line);
 }
 
-char	*gnl_split(char *buf, char *save)
+static char	*gnl_split(char *buf, char *save)
 {
 	char	*line;
 	char	*nlptr;
+
 	if (buf == NULL && save[0] != '\0')
 	{
 		line = ft_strcdup(save, '\0');
 		save[0] = '\0';
 	}
-	else if (buf == NULL)
+	else if (buf == NULL && save[0] == '\0')
 		return (NULL);
-
 	else if (!(ft_strchr(buf, '\n')) && save[0] != '\0')
 	{
 		line = ft_strcjoin(save, buf, '\0');
 		save[0] = '\0';
 	}
-	else if (!(ft_strchr(buf, '\n')))
+	else if (!(ft_strchr(buf, '\n')) && save[0] == '\0')
 		line = ft_strcdup(buf, '\0');
 	else
 	{
@@ -82,14 +80,13 @@ char	*gnl_split(char *buf, char *save)
 char	*get_next_line(int fd)
 {
 	static char	save[BUFFER_SIZE + 1];
-	char		*buf;
+	char		*raw_line;
 	char		*line;
-	//char		*nlptr;
 
 	if ((line = check_save(save)) != NULL)
 		return (line);
-	buf = ft_read_buffer(fd);
-	line = gnl_split(buf, save);
+	raw_line = ft_read_buffer(fd);
+	line = gnl_split(raw_line, save);
 	free(buf);
 	return (line);
 }

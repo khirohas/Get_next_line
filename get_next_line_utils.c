@@ -89,11 +89,12 @@ char	*ft_strcjoin(const char *s1, const char *s2, char c)
 		dst = ft_strcdup(s1, c);
 	else
 	{
-		if ((c_ptr = ft_strchr(s2, c)) == NULL)
+		c_ptr = ft_strchr(s2, c);
+		if (c_ptr == NULL)
 			return (NULL);
 		dst_len = ft_strlen(s1) + (c_ptr - s2 + 1);
 		dst = malloc(dst_len + 1);
-		if(!dst)
+		if (!dst)
 			return (NULL);
 		ft_strlcpy(dst, s1, ft_strlen(s1) + 1);
 		ft_strlcpy(dst + ft_strlen(s1), s2, (c_ptr - s2 + 1) + 1);

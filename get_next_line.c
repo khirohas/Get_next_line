@@ -6,7 +6,7 @@
 /*   By: khirohas <khirohas@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 08:44:04 by khirohas          #+#    #+#             */
-/*   Updated: 2022/02/05 00:05:51 by khirohas         ###   ########.fr       */
+/*   Updated: 2022/02/10 01:24:57 by khirohas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static char	*update_save(char *save)
 	char	*line;
 	char	*nlptr;
 
-	if (!ft_strchr(save, '\n'))
-		return (NULL);
 	line = ft_strcdup(save, '\n');
 	if (line == NULL)
 		return (NULL);
@@ -80,7 +78,7 @@ static char	*gnl_split(char *buf, char *save)
 
 char	*get_next_line(int fd)
 {
-	static char	save[(size_t)BUFFER_SIZE];
+	static char	save[BUFFER_SIZE];
 	char		*raw_line;
 	char		*line;
 

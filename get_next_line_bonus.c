@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khirohas <khirohas@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 08:44:04 by khirohas          #+#    #+#             */
-/*   Updated: 2022/02/05 00:05:51 by khirohas         ###   ########.fr       */
+/*   Updated: 2022/02/09 19:14:35 by khirohas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	errno = 0;
-	if((fd < 0 || OPEN_MAX <= fd) || read(fd, save[fd], 0) != 0)
+	if ((fd < 0 || OPEN_MAX <= fd) || read(fd, save[fd], 0) != 0)
 		return (NULL);
 	if (ft_strchr(save[fd], '\n'))
 		return (update_save(save[fd]));

@@ -6,11 +6,11 @@
 /*   By: khirohas <khirohas@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 08:44:00 by khirohas          #+#    #+#             */
-/*   Updated: 2021/12/25 08:44:00 by khirohas         ###   ########.fr       */
+/*   Updated: 2022/02/09 19:10:08 by khirohas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khirohas <khirohas@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <limits.h>
 #include <stdint.h>
 
@@ -80,17 +80,19 @@ static char	*gnl_split(char *buf, char *save)
 
 char	*get_next_line(int fd)
 {
-	static char	save[(size_t)BUFFER_SIZE];
+	static char	save[OPEN_MAX][(size_t)BUFFER_SIZE];
 	char		*raw_line;
 	char		*line;
 
 	errno = 0;
-	if (ft_strchr(save, '\n'))
-		return (update_save(save));
+	if((fd < 0 || OPEN_MAX <= fd) || read(fd, save[fd], 0) != 0)
+		return (NULL);
+	if (ft_strchr(save[fd], '\n'))
+		return (update_save(save[fd]));
 	raw_line = ft_read_buffer(fd);
 	if (errno != 0)
 		return (NULL);
-	line = gnl_split(raw_line, save);
+	line = gnl_split(raw_line, save[fd]);
 	free(raw_line);
 	return (line);
 }
